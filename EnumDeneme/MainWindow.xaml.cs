@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace EnumDeneme
@@ -84,11 +85,13 @@ namespace EnumDeneme
                     valueAndComboPanel.Orientation = Orientation.Horizontal;
                     valueAndComboPanel.HorizontalAlignment = HorizontalAlignment.Center;
 
-                    Label valueLabel = new Label();
+                    Label valueLabel = new Label();                   
                     valueLabel.Width = 100;
                     valueLabel.Content = value;
 
                     ComboBox comboBox = new ComboBox();
+                    comboBox.Foreground = Brushes.Black;
+                    comboBox.FontWeight = FontWeights.Bold;
                     comboBoxs.Add(comboBox);
                     labels.Add(valueLabel);
 
@@ -195,15 +198,23 @@ namespace EnumDeneme
         private void KaydetClick(object sender, RoutedEventArgs e)
         {
             string newCsText = csText;
+            List<string> comboText = new List<string>();
 
+            foreach (ComboBox combo in comboBoxs) 
+            {
+                comboText.Add(combo.Text);
+            }
 
-
-            //for (int i = 0; i < enums.Count; i++)
-            //{
-            //    MessageBox.Show("enum " + enums.Values.ElementAt(i).ToString() + "  " + "enum " + enums.Keys.ElementAt(i).ToString());
-            //    //Console.WriteLine(matchedEnum.Values.ElementAt(i) + "  " + matchedEnum.Keys.ElementAt(i));
-            //    newCsText = newCsText.Replace("enum " + enums.Values.ElementAt(i).ToString(), "enum " + enums.Keys.ElementAt(i).ToString());
-            //}
+            foreach (var text in comboText)
+            {
+                
+                if (text != "" & comboText.Where(x => x.Equals(text)).Count() > 1)
+                {
+                    
+                    MessageBox.Show(text + " elemanı birden fazla enum ile eşleşemez.");
+                    return;
+                }
+            }
 
             for (int i = 0; i < labels.Count; i++)
             {
@@ -211,7 +222,7 @@ namespace EnumDeneme
                 {
                     newCsText = newCsText.Replace("enum " + comboBoxs[i].Text, "enum " + labels[i].Content);
                 }
-            }
+            }            
 
             string path = FileNameTextBox.Text;
             string newPath = path.Substring(0, path.LastIndexOf("\\")) + "\\" + "new" + path.Substring(path.LastIndexOf('\\') + 1);
@@ -225,7 +236,7 @@ namespace EnumDeneme
                 File.WriteAllText(newPath, newCsText);
             }
             
-            MessageBox.Show(path.Substring(0, path.LastIndexOf("\\")) + "\\" + "new" + path.Substring(path.LastIndexOf('\\') + 1) + " Dosyası Kaydedildi.");
+            MessageBox.Show(newPath + " Dosyası Kaydedildi.");
         }
 
 
