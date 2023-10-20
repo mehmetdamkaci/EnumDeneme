@@ -67,7 +67,7 @@ namespace EnumDeneme
 
             if (path == null)
             {
-                csText = File.ReadAllText("C:\\Users\\PC_4232\\Desktop\\Mehmet\\newEnums.cs");
+                csText = File.ReadAllText("C:\\Users\\PC_4232\\Desktop\\Mehmet\\newenum1.cs");
             }
             else
             {
@@ -98,9 +98,11 @@ namespace EnumDeneme
                 enumButton.Foreground = Brushes.White;
                 enumButton.Content = "     " + kvp.Key + "     ";
                 enumButton.FontWeight = FontWeights.Bold;   
+                enumButton.Name = kvp.Key;
+                buttons.Add(enumButton);
                 enumButton.FontSize = 16;
                 enumButton.Width = 200;
-                //enumButton.Margin = new Thickness(0, 20, 0, 0);
+                enumButton.Margin = new Thickness(0, 10, 0, 0);
 
                 enumButton.Click += enumButtonClick;
 
@@ -108,15 +110,16 @@ namespace EnumDeneme
                 enumTextBox.HorizontalAlignment = HorizontalAlignment.Left;
                 enumTextBox.TextWrapping = TextWrapping.NoWrap;
                 enumTextBox.Name = kvp.Key;
+                enumTextBox.FontWeight = FontWeights.Bold;
                 enumTextBox.Width = 200;
                 
                 textBoxes.Add(enumTextBox);
 
-                comboTextBoxPanel.Children.Add(enumButton);
-                comboTextBoxPanel.Children.Add(enumTextBox);
+                //comboTextBoxPanel.Children.Add(enumButton);
+                //comboTextBoxPanel.Children.Add(enumTextBox);
 
                 comboTextBoxPanel.Margin = new Thickness(0, 10, 0, 0);
-                stackPanel.Children.Add(comboTextBoxPanel);
+                stackPanel.Children.Add(enumButton);
 
                 //stackPanel.Children.Add(enumButton);
                 //stackPanel.Children.Add(enumTextBox);
@@ -169,7 +172,6 @@ namespace EnumDeneme
             KaydetButton.Margin = new Thickness(0, 20, 0, 0);
             KaydetButton.Click += KaydetClick;
             stackPanel.Children.Add(KaydetButton);
-
         }
 
 
@@ -271,14 +273,14 @@ namespace EnumDeneme
             }
             
 
-            for(int i = 0; i < comboBoxs.Count; i++)
+            for(int i = 0; i < buttons.Count; i++)
             {
 
                 foreach (var text in comboText)
                 {
                     if (text != "")
                     {
-
+                        if (buttons[i].Name == text) stackPanel.Children.Remove(buttons[i]);
                         comboList.Remove(text);
                     }
                         
@@ -334,7 +336,7 @@ namespace EnumDeneme
                 if (!result.Success)
                 {
                     Console.WriteLine("Derleme hatası:\n" + string.Join("\n", result.Diagnostics));
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                 }
 
                 ms.Seek(0, SeekOrigin.Begin);
@@ -407,7 +409,8 @@ namespace EnumDeneme
             kaydetTextBox.Width = kaydetWindow.Width - 50;
             kaydetTextBox.Height = kaydetWindow.Height - 150;
             kaydetTextBox.Margin = new Thickness(0, 0, 0, 10);
-            
+            kaydetTextBox.FontWeight = FontWeights.Bold;
+
             foreach(var log in Log)
             {
                 kaydetTextBox.Text += log + "\r\n";
